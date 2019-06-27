@@ -1,4 +1,25 @@
 @extends('admin/layout/main') @section('content')
+<style>
+span.select2.select2-container.select2-container--bootstrap4.select2-container--focus,.product_div{
+  width: 161px!important;
+}
+
+input.form-control.qunatity_div {
+    width: 161px;
+    margin-top: -37px;
+    margin-left: 222px;}
+    input.form-control.metric_div{
+        width: 161px;
+        margin-top: -36px;
+        float: right;
+        margin-right: 80px;
+    }
+    input.add_field_button_products,input.remove_field_button_products {
+    margin-top: -30px;
+    float: right;
+    margin-right: 32px;
+}
+</style>
 <section class="section-container">
         <!-- Page content-->
         <div class="content-wrapper">
@@ -35,21 +56,33 @@
                             <option {{ $recipe->type == '4' ? 'selected':'' }} value="4">Dinner</option>
                          </select>
                       </div>
+                      <div id="container">
+                        <?php $count_i=1;?>
                       @foreach($recipe->recipeIngredient as $recipe_products)
-                      <div class="form-group"><label>Products</label>
-                        <select class="form-control" id="select2-1" name="product">
-                          <option>Select  Product</option>
+                        <div class="form-group input_fields_wrap_products"><label>Products</label>
+                        <select class="form-control  product_div"  name="product[product_name][]" >
+                          <option >Select  Product</option>
                           @foreach($products as $product)
-                          <option value="{{$product->id}}" @if($product->id == $recipe_products->id)
-                                        selected @endif>{{$product->name}}</option>
-                          @endforeach
+                           <option value="{{$product->id}}" @if($product->id == $recipe_products->id)
+                                         selected @endif>{{$product->name}}</option>
+                           @endforeach
                         </select>
+                        <input type="text" class="form-control qunatity_div" name="product[qty][]" placeholder="enter quantity" value="{{$recipe_products->pivot->quantity}}">
+                        <input type="text" class="form-control metric_div" name="product[metric][]" placeholder="enter metric" value="{{$recipe_products->pivot->metric}}">
+                        @if($recipe_products->pivot->hide_metric ==0)
+                         <div class="c-checkbox"><label><input type="checkbox"  name="product[is_hide][]"><span class="fa fa-check"></span>Show Metric</label></div>
+                         @else
+                         <div class="c-checkbox"><label><input type="checkbox" checked="" name="product[is_hide][]"><span class="fa fa-check"></span> Show Metric </label></div>
+                         @endif
+                        @if($count_i == 1)
+                        <input type="button" class="add_field_button_products" value="+" />@endif
+                        <?php $count_i++; ?>
                          </div>
-                        @endforeach
 
-                        @foreach($recipe->recipeIngredients as $recipe_quantity)
-                        <div class="form-group"><label>Quantity</label><input class="form-control" type="text" name="quantity" Value="{{$recipe_quantity->quantity}}" ></div>
-                          @endforeach
+                         @endforeach
+
+                     </div>
+
                       <div class="step-proc">
                         <?php $i=-1 ; ?>
                           @foreach($recipe->recipePreparation as $recipe_step)
@@ -58,26 +91,46 @@
                           <div class="form-group input_fields_wrap"><label>Step</label>
                             <input type="hidden" class= "recipe_step_id" name="recipe_step_id[]" value="{{$recipe_step->id}}">
                             <textarea class="form-control" type="text" name="step[{{$i}}][title]">{{$recipe_step->step}}</textarea>
+                            @if(!empty($recipe_step->image))
                             <a id="{{$recipe_step->id}}" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger delete" ><i class="fa fa-times"></i></a>
-                          <img src="{{'storage/'.$recipe_step->image}}" type="file" name="steps[{{$i}}][image]" height=50 width=50>
+                            <img src="{{'storage/'.$recipe_step->image}}" type="file" name="steps[{{$i}}][image]" height=50 width=50>
+                          @endif
                           <input class="form-control" type="file" name="steps[{{$i}}][image]" value="{{'storage/'.$recipe_step->image}}">
                         </div>
                           <input type="hidden" class="index_step" value="{{$i}}">
                         @endforeach
                       </div>
                         <button class="add_field_button">+</button>
-                              <div class="form-group"><label>Video</label><input class="form-control" name="video" type="text" Value="{{$recipe->video}}" </div>
+                              <div class="form-group"><label>Video</label>
+                                @if(!empty($recipe->video))
+                                <iframe width="100" height="100" src="//www.youtube.com/embed/{{$recipe->video}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                @endif
+                                <input class="form-control" name="video" type="" Value="{{$recipe->video}}"></div>
                                 <button class="btn btn-success btn-lg" type="submit" style="width:100%;">Update</button>
                              </div>
                     </div>
                  </div><!-- END card-->
               </div>
             </form>
+            <div class="container_copy" style="display:none;">
+            <div class="form-group input_fields_wrap_products"><label>Products</label>
+            <select class="form-control  product_div"  name="product[product_name][]" >
+              <option selected="true" disabled="disabled">Select  Product</option>
+              @foreach($products as $product)
+               <option value="{{$product->id}}" >{{$product->name}}</option>
+               @endforeach
+            </select>
+            <input type="text" class="form-control qunatity_div" name="product[qty][]" placeholder="enter quantity" >
+            <input type="text" class="form-control metric_div" name="product[metric][]" placeholder="enter metric">
+            <div class="c-checkbox"><label><input type="checkbox" name="product[is_hide][]"><span class="fa fa-check"></span> Show Metric</label></div>
+            <input type="button" class="remove_field_button_products" value="-" />
+          </div></div>
 
            </div>
         </div>
      </section>
      <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+     <script src="assets/js/my.js"></script>
      <script>
      $(function() {
          $(".delete").click(function(){
@@ -117,7 +170,22 @@
              e.preventDefault(); $(this).parent('div').remove(); x--;
          })
 
-     });
-     </script>
+         // add product name and their quantity
+         $('select.product_div').change(function() {
+           newProduct();
+          });
+         $('#container').on('click','.add_field_button_products', function () {
+         var newthing=$('.container_copy').html();
+         $('#container').append(newthing);
+         $('select.product_div').change(function() {
+           newProduct();
+          });
+          $('#container').on('click','.remove_field_button_products', function () {
+               $(this).parent().remove();
+               newProduct();
+             });
+           });
+         });
+       </script>
 
 @endsection

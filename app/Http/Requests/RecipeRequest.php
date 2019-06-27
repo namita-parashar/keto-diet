@@ -32,7 +32,7 @@ class RecipeRequest extends FormRequest
             'time'=>'required',
             'type'=>'required',
             'product'=>'required',
-            'quantity'=>'required',
+            // 'quantity'=>'required',
             'step'=>'required',
           ];
     }

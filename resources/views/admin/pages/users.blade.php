@@ -40,7 +40,7 @@
                               </td>
                             <td class="text-center">
                         <div class="btn-group btn-group-xs">
-                            <a href="{{route('show_user_detail',$users_data->id)}}" data-toggle="tooltip" title="View" class="btn btn-default"><i class="fa fa-eye"></i></a>
+                            <a href="{{route('show_user_detail',$users_data->user->id)}}" data-toggle="tooltip" title="View" class="btn btn-default"><i class="fa fa-eye"></i></a>
                             <!-- <a id="{{$users_data->id}}" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger delete" ><i class="fa fa-times"></i></a> -->
                         </div>
                     </td>

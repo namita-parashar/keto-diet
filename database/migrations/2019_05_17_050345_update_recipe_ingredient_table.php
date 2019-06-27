@@ -19,6 +19,7 @@ class UpdateRecipeIngredientTable extends Migration
             $table->dropForeign('recipe_ingredient_recipe_id_foreign');
            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
+            $table->tinyinteger('is_hide')->comment('0:hide,1:show')->default(0);
         });
     }
 

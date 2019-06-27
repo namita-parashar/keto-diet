@@ -36,4 +36,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userPreferenceMeal(){
+          return $this->belongsToMany('App\Models\Product','user_preferance_meal','user_id','product_id');
+    }
+
+    public function activity(){
+          return $this->belongsToMany('App\Models\Activity','user_preference_activity','user_id','activity_id');
+    }
+
+    public function userDietChart(){
+          return $this->belongsToMany('App\Models\Recipe','diet_chart','user_id','recipe_id');
+    }
+
 }

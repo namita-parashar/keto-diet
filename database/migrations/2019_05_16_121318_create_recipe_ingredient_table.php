@@ -20,6 +20,7 @@ class CreateRecipeIngredientTable extends Migration
             $table->integer('recipe_id')->unsigned()->nullable();
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->string('quantity');
+            $table->string('metric')->nullable();
             $table->timestamps();
         });
     }

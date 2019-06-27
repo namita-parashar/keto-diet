@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRecipePreparationTable extends Migration
+class CreatePaymentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateRecipePreparationTable extends Migration
      */
     public function up()
     {
-        Schema::create('recipe_preparation', function (Blueprint $table) {
+        Schema::create('payment', function (Blueprint $table) {
             $table->Increments('id');
-            $table->Integer('recipe_id')->unsigned()->nullable();
-            $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
-            $table->string('step',400);
-            $table->string('image')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->decimal('price');
+            $table->tinyinteger('status')->Comments('1:approved,0:pending');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateRecipePreparationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recipe_preparation');
+        Schema::dropIfExists('payment');
     }
 }

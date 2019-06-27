@@ -1,4 +1,25 @@
 @extends('admin/layout/main') @section('content')
+<style>
+span.select2.select2-container.select2-container--bootstrap4.select2-container--focus,.product_div{
+  width: 161px!important;
+}
+
+input.form-control.qunatity_div {
+    width: 161px;
+    margin-top: -37px;
+    margin-left: 222px;}
+    input.form-control.metric_div{
+        width: 161px;
+        margin-top: -36px;
+        float: right;
+        margin-right: 80px;
+    }
+    input.add_field_button_products,input.remove_field_button_products {
+    margin-top: -30px;
+    float: right;
+    margin-right: 32px;
+}
+</style>
 <section class="section-container">
         <!-- Page content-->
         <div class="content-wrapper">
@@ -46,17 +67,21 @@
                                 <option value="4">Dinner</option>
                              </select>
                           </div>
-                          <div class="form-group"><label>Products</label>
-                            <select class="form-control multiselecopt product_div" id="select2-1" name="product" multiple>
-                              <option>Select  Product</option>
+                          <div id="container">
+                          <div class="form-group input_fields_wrap_products"><label>Products</label>
+                            <select class="form-control  product_div"  name="product[product_name][]" >
+                              <option >Select  Product</option>
                               @foreach($products as $product)
                               <option class="product_value" value ="{{$product->id}}">{{$product->name}}</option>
                               @endforeach
                             </select>
+                            <input type="text" class="form-control qunatity_div" name="product[qty][]" placeholder="enter quantity">
+                            <input type="text" class="form-control metric_div" name="product[metric][]" placeholder="enter metric">
+                            <div class="c-checkbox"><label><input type="checkbox" name="product[is_hide][]"><span class="fa fa-check"></span> Show Metric</label></div>
+                            <input type="button" class="add_field_button_products" value="+" />
+                            <!-- <input type="button" class="remove_field" value="-" style="display:none;"> -->
                              </div>
-                             <span class="error" style="display:none;">Quantity field is required to fill</span>
-                             <div class="form-group quantity_div" style="display:none;"><label>Quantity</label><input class="form-control" type="text" placeholder="Enter Quantity" name="quantity">
-                             </div>
+                           </div>
                              <div class="form-group input_fields_wrap"><label>Steps</label>
                                <textarea class="form-control " type="text" placeholder="Enter step" name="step[][title]"></textarea>
                                <input type="file" class="form-control" name="steps[][image]">
@@ -64,7 +89,7 @@
                              </div>
                              <div class="form-group">
                                <label>Video</label>
-                               <input type="file" class="form-control" name="video" accept="video/*">
+                               <input type="" name="video" placeholder="video_id" class="form-control">
 
                              </div>
                           <button class="btn btn-success btn-lg" type="submit" style="width:100%;">Add</button>
@@ -72,13 +97,26 @@
                  </div><!-- END card-->
               </div>
             </form>
-
+            <div class="container_copy" style="display:none;">
+            <div class="form-group input_fields_wrap_products"><label>Products</label>
+            <select class="form-control  product_div"  name="product[product_name][]" >
+              <option selected="true" disabled="disabled">Select  Product</option>
+              @foreach($products as $product)
+               <option value="{{$product->id}}" >{{$product->name}}</option>
+               @endforeach
+            </select>
+            <input type="text" class="form-control qunatity_div" name="product[qty][]" placeholder="enter quantity" >
+            <input type="text" class="form-control metric_div" name="product[metric][]" placeholder="enter metric">
+            <div class="c-checkbox"><label><input type="checkbox" name="product[is_hide][]"><span class="fa fa-check"></span> Show Metric</label></div>
+            <input type="button" class="remove_field_button_products" value="-" />
+          </div></div>
            </div>
         </div>
      </section>
 
 @endsection
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="assets/js/my.js"></script>
 <script>
 $(document).ready(function() {
     var max_fields      = 10; //maximum input boxes allowed
@@ -98,32 +136,28 @@ $(document).ready(function() {
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
+    // add product name and their quantity
+    // var i;
+    $('select.product_div').change(function() {
+                newProduct();
+    });
+    $('#container').on('click','.add_field_button_products', function () {
+    var newthing=$('.container_copy').html();
+    $('#container').append(newthing);
+    $('select.product_div').change(function() {
+      newProduct();
+     });
+     $('#container').on('click','.remove_field_button_products', function () {
+          $(this).parent().remove();
+          newProduct();
+        });
+      });
+
+
+
+
+
 
 });
 
-$(document).ready(function () {
-    $("select.product_div").change(function (){
-			if($(this).val()) {
-				$("div.quantity_div").show();
-        $('.quantity_div').prop('required',true);
-       $(".select2-results").hide();
-			}
-    });
-
-
-        // alert($('.quantity_div').val());
-      // $("select.product_div").click(function(){
-      //   alert('inside');
-      //   if($('.quantity_div').val() !=""){
-      //     $(".select2-results").show();
-      //   }
-      //   else{
-      //     alert('dff');
-      //     $(".error").toggle();
-      //   }
-      // });
-
-
-
-	});
 </script>

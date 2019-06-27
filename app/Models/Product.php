@@ -12,7 +12,7 @@ class Product extends Model
     public function recipes(){
           return $this->belongsToMany('App\Models\Recipe','recipe_ingredient','product_id','recipe_id');
     }
-    
+
     public function users(){
           return $this->belongsToMany('App\Models\User','user_preferance_meal','product_id','user_id');
     }

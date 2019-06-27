@@ -20,7 +20,7 @@ border: 1px solid rgb(228, 229, 229);
 <!-- Page content-->
 <div class="content-wrapper">
 <div class="content-heading">
-<div>{{$user->user->name}} <small>{{$user->user->email}}</small></div><!-- START Language list-->
+<div>{{$user->user->name ?$user->user->name:""}} <small>{{$user->user->email}}</small></div><!-- START Language list-->
 <div class="ml-auto" style="margin-top: -21px;">
 <button id="profile-btn" class="btn btn-default btn-lg dash-navi"><em class="fa fa-mask success-circle"></em>Profile</button>
 <button id="activity-btn" class="btn btn-default btn-lg dash-navi"><em class="fa fa-mask success-circle"></em> Activity Preference</button>
@@ -141,9 +141,9 @@ border: 1px solid rgb(228, 229, 229);
 <!-- Start of user meal Preference div -->
 <div class="col-lg-9 meal-div">
   <div class="add col-sm-12 " style="margin-top: -5px;">
-    <form action="{{route('index_diet',$users_data->id)}}" method="post">
+    <!-- <form action="{{route('index_diet',$users_data->id)}}" method="post">
       <a href="{{route('index_diet',$users_data->id)}}"><button class="btn btn-success" type="button" ><i class="fa fa-plus" aria-hidden="true"></i> Add User Diet</button></a>
-    </form>
+    </form> -->
   </div>
 <div class="tab-content p-0 b0">
 <div class="tab-pane active" id="tabSetting1">

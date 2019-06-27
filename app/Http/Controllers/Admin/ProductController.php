@@ -26,6 +26,10 @@ class ProductController extends Controller
       else{
         $is_important =0;
       }
+      $exists_product = Product::Where('name','=',$request->name)->first();
+      if($exists_product){
+          return back()->with('errors', collect(['credentials' => 'Already exists product with this name']));
+      }else{
       $product = new Product();
       $product->name = $request->name;
       $product->calories = $request->calories;
@@ -33,6 +37,8 @@ class ProductController extends Controller
       $product->is_important = $is_important;
       $product->save();
       return redirect()->back();
+    }
+
     }
 
     public function updateIndex(Request $request)

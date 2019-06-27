@@ -11,7 +11,7 @@
 |
 */
 //  start admin panel routes
-Route::group(array('prefix' => 'admin'), function () {
+Route::group(array('prefix' => '/'), function () {
     Auth::routes();
     Route::group(['middleware' => ['admin']], function () {
         Route::get('/dashboard', 'HomeController@index')->name('dashboard');
@@ -54,4 +54,19 @@ Route::group(array('prefix' => 'admin'), function () {
  // start website routes
 Route::get('user-information','Web\UserController@index')->name('index_user_information');
 Route::post('user-information','Web\UserController@create')->name('create_user_information');
+Route::get('final','Web\UserController@showFinal')->name('show_user_result');
+Route::get('show-email','Web\UserController@showEmail')->name('show_email');
+Route::post('show-email','Web\UserController@sendEmail')->name('diet_plan');
+Route::get('checkout','Web\UserController@checkout')->name('checkout');
+// Route::get("diet-plan",function(){ return View::make("web.diet-plan");})->name('diet-plan');
+Route::get("diet-plan/{uuid?}",'Web\UserController@dietPlan')->name('diet-plan');
+Route::get("paypalcash/{user_id}",'Web\PaymentController@payWithcash')->name('paypalcash');
+// Route::get("paywithpaypal/{user_id}",function(){ return View::make("web.paywithpaypal");})->name('paypal');
+Route::get("paywithpaypal/{user_id}",'Web\PaymentController@payPal')->name('paypal');
+Route::post('paywithpaypal/{user_id}','Web\PaymentController@payWithpaypal')->name('paywithpaypal');
+Route::get('paymentstatus/{user_id?}','Web\PaymentController@getPaymentStatus')->name('paymentstatus');
+Route::get('recipe-name','Web\UserController@recipeName')->name('recipe-name');
+Route::get('diet-plan-detail/{recipe_id}','Web\UserController@dietPlanDetails')->name('diet-plan-detail');
+Route::get('generate-pdf/{user_id?}/{week?}','Web\UserController@generatePDF')->name('grocery-list');
+
  //end website routes

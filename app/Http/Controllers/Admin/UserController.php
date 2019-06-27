@@ -21,14 +21,12 @@ class UserController extends Controller
 
     public function showUserDetail(Request $request){
       $user = UserProfile::where('user_id',$request->id)->first();
-      // return  $user->user->userDietChart()->with('recipe')->get();
       return view('admin/pages/user-detail',['user'=>$user]);
     }
 
     public function showUserDietDetail(Request $request)
     {
       $recipe = Recipe::where('id',$request->id)->first();
-      // return  $recipe->recipePreparation;
       return view('admin/pages/user-diet-detail',['recipe'=>$recipe]);
     }
 }

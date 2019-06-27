@@ -16,10 +16,11 @@ class CreateRecipesTable extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->Increments('id');
             $table->string('name');
-            $table->string('time');
+            $table->string('time')->nullable();
             // $table->string('image');
             $table->string('video')->nullable();
-            // $table->string('steps');
+            // $table->string('week')->nullable();;
+            // $table->string('day')->nullable();;
             $table->tinyinteger('type')->comment('1:breakfat,2:brunch,3:lunch,4:dinner');
             $table->timestamps();
         });
